@@ -4,7 +4,8 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime
 
 # Criando coneção com banco de dados
-engine = create_engine('sqlite:///banco.db', echo=True)
+engine = create_engine('sqlite:///dados/banco.db', echo=True)
+engine2 = create_engine('sqlite:///dados/banco_test.db', echo=True)
 
 # Declarando base da classe
 Base = declarative_base()
@@ -23,9 +24,11 @@ class Mensagens(Base):
     enviado = Column(Boolean, nullable=False)
     data_enviada = Column(Date, default=datetime.now().date())
 
+
     def __repr__(self):
         return f"Cliente: {self.cliente}, Telefone: {self.telefone}, Enviado: {self.enviado}, Data: {self.data_enviada}"
 
 
 # Criando tabelas
 Base.metadata.create_all(engine)
+Base.metadata.create_all(engine2)
