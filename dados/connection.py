@@ -24,7 +24,6 @@ class Mensagens(Base):
     enviado = Column(Boolean, nullable=False)
     data_enviada = Column(Date, default=datetime.now().date())
 
-
     def __repr__(self):
         return f"Cliente: {self.cliente}, Telefone: {self.telefone}, Enviado: {self.enviado}, Data: {self.data_enviada}"
 

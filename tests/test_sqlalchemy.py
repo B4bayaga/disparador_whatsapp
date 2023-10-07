@@ -1,8 +1,6 @@
 import pytest
-from pytest import fixture
 from dados import connection
-from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
 
@@ -14,6 +12,7 @@ def session():
     Session = sessionmaker(bind=connection.engine2)
     session = Session()
     yield session
+    session.rollback()
     session.close()
 
 
