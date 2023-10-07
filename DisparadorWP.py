@@ -8,7 +8,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import random
-import openpyxl
 from datetime import datetime, timedelta
 from time import sleep
 
@@ -39,7 +38,6 @@ class DisparadorWP:
         self.wait_2 = WebDriverWait(self.driver, 10)
         self.actions = ActionChains(self.driver)
 
-
     def registra_envio_mensagem(self, inscricao, nome, fone, enviado: bool, filial) -> None:
         inscricao= int(inscricao)
         nome= str(nome)
@@ -52,7 +50,7 @@ class DisparadorWP:
     def mensagem_cobranca_texto(self, inscricao, nome) -> str:
         ''' Metodo criando mensagem de cobrança'''
         return (f"{inscricao} - Olá Sr.(a) {nome} tudo bem?! {self.mensagem}")
-    
+
     def mensagem_cobranca_imagem(self, imagem) -> None:
         self.wait_2.until(EC.presence_of_element_located((By.XPATH, self.elemento_anexar)))
         botao_anexar = self.driver.find_element(By.XPATH, self.elemento_anexar)

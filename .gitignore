@@ -131,6 +131,7 @@ venv.bak/
 .vscode
 dados/banco_test.db
 dados/banco.db
+Cookies/
 
 # Spyder project settings
 .spyderproject
