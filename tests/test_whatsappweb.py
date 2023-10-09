@@ -7,13 +7,13 @@ from selenium.webdriver.support import expected_conditions as EC
 @pytest.fixture
 def Wp():
     Wp = DisparadorApp()
+    Wp.whatsappWeb()
     yield Wp
     Wp.driver.quit()
 
 
 def test_abrindo_pagia_whatsapp_web(Wp):
     assert Wp.driver.title == "WhatsApp"
-    Wp.driver.quit()
 
 
 def test_confirmando_url_pagina(Wp):
@@ -27,7 +27,10 @@ def test_elemento_espera_apos_login(Wp):
 
 
 def test_elemento_digita_numero_whatsapp(Wp):
-    Wp.__abre_caixa_digita_telefone()
+    Wp.wait.until(EC.presence_of_element_located((
+        By.XPATH, Wp.elemento_espera_depois_login
+    )))
+    Wp.abre_caixa_digita_telefone()
     assert Wp.wait.until(EC.presence_of_element_located((
         By.XPATH, Wp.caixa_digita_numero_celular
     )))
