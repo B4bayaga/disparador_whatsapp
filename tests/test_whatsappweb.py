@@ -30,7 +30,7 @@ def test_elemento_digita_numero_whatsapp(Wp):
     Wp.wait.until(EC.presence_of_element_located((
         By.XPATH, Wp.elemento_espera_depois_login
     )))
-    Wp.abre_caixa_digita_telefone()
+    Wp._DisparadorApp__abre_caixa_digita_telefone()
     assert Wp.wait.until(EC.presence_of_element_located((
         By.XPATH, Wp.caixa_digita_numero_celular
     )))
