@@ -28,9 +28,12 @@ class DisparadorApp:
         self.icone_digita_numero = (
             '//*[@id="startNonContactChat"]/div/span'
         )
+        self.elemento_caixa_digita_mensagem = (
+            '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]'
+        )
         self.actions = ActionChains(self.driver)
         self.wait = WebDriverWait(self.driver, 60)
-        self.primeiro_acesso_app = True
+        self.__primeiro_acesso_app = True
 
     def whatsappWeb(self):
         self.driver.get("https://web.whatsapp.com/")
@@ -53,7 +56,7 @@ class DisparadorApp:
             return numero
 
     def __abre_caixa_digita_telefone(self):
-        if self.primeiro_acesso_app:
+        if self.__primeiro_acesso_app:
             self.__clica_icone_digita_numero()
             self.primeiro_acesso_app = False
         else:
@@ -71,9 +74,19 @@ class DisparadorApp:
         caixa_digita_numero.send_keys(self.__exclui_9_telefone(numero))
         sleep(0.5)
         caixa_digita_numero.send_keys(Keys.ENTER)
+        return self
 
-    def envia_mensagem(self):
-        pass
+    def envia_mensagem(self, mensagem):
+        self.wait.until(EC.presence_of_element_located((
+            By.XPATH, self.elemento_caixa_digita_mensagem
+        )))
+        caixa_digita_mensagem = self.driver.find_element(
+            By.XPATH, self.elemento_caixa_digita_mensagem
+        )
+        caixa_digita_mensagem.send_keys(mensagem)
+        caixa_digita_mensagem.send_keys(Keys.ENTER)
+        return None
+
 
 if __name__ == "__main__":
     Wp = DisparadorApp()

@@ -42,3 +42,17 @@ def test_remove_9_telefone():
     assert Wp._DisparadorApp__exclui_9_telefone('11992129494') == '11992129494'
     assert Wp._DisparadorApp__exclui_9_telefone('77992129494') == '7792129494'
     assert Wp._DisparadorApp__exclui_9_telefone('7792129494') == '7792129494'
+
+
+def test_elemento_espera_caixa_digita_mensagem(Wp):
+    Wp.wait.until(EC.presence_of_element_located((
+        By.XPATH, Wp.elemento_espera_depois_login
+    )))
+    Wp.digita_numero_telefone('77992129494')
+    assert Wp.wait.until(EC.presence_of_element_located((
+        By.XPATH, Wp.elemento_caixa_digita_mensagem
+    )))
+
+
+def test_texto_envia_mensagem(Wp):
+    pass
