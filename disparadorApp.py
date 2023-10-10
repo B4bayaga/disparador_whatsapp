@@ -41,28 +41,39 @@ class DisparadorApp:
         icone.click()
 
     def __exclui_9_telefone(self, numero):
-        return numero
+        '''
+        Exclui o número 9 depois nos telefones que tem menos de 10 digitos
+        '''
+        if len(numero) == 11:
+            if numero[0] == '1' and numero[1] == '1':
+                return numero
+            elif numero[2] == '9':
+                return numero[:2] + numero[3:]
+        else:
+            return numero
 
     def __abre_caixa_digita_telefone(self):
         if self.primeiro_acesso_app:
             self.__clica_icone_digita_numero()
             self.primeiro_acesso_app = False
         else:
-            self.actions.key_down(Keys.CONTROL).key_down(Keys.ALT).send_keys('s').key_up(Keys.ALT).key_up(Keys.CONTROL).perform()
+            self.actions.key_down(Keys.CONTROL).key_down(
+                Keys.ALT).send_keys('s').key_up(Keys.ALT).key_up(
+                    Keys.CONTROL
+                ).perform()
 
     def digita_numero_telefone(self, numero):
         ''' Digita o número de telefone via plugin WA Web Plus'''
         self.__abre_caixa_digita_telefone()
-        try:
-            self.wait_2.until(EC.presence_of_element_located((By.XPATH, self.caixa_digita_numero_celular)))
-        except:
-            self.actions.send_keys(Keys.ESCAPE).send_keys(Keys.ESCAPE).perform()
-            return None
-        caixa_digita_numero = self.driver.find_element(By.XPATH, self.caixa_digita_numero_celular)
+        caixa_digita_numero = self.driver.find_element(
+            By.XPATH, self.caixa_digita_numero_celular
+        )
         caixa_digita_numero.send_keys(self.__exclui_9_telefone(numero))
-        sleep(1)
+        sleep(0.5)
         caixa_digita_numero.send_keys(Keys.ENTER)
 
+    def envia_mensagem(self):
+        pass
 
 if __name__ == "__main__":
     Wp = DisparadorApp()
@@ -70,5 +81,5 @@ if __name__ == "__main__":
     Wp.wait.until(EC.presence_of_element_located((
         By.XPATH, Wp.elemento_espera_depois_login
     )))
-    Wp._DisparadorApp__abre_caixa_digita_telefone()
+    Wp.digita_numero_telefone('77992129494')
     sleep(300)
