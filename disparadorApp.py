@@ -36,14 +36,12 @@ class DisparadorApp:
         self.wait = WebDriverWait(self.driver, 60)
         self.__primeiro_acesso_app = True
 
-    def whatsappWeb(self):
-        self.driver.get("https://web.whatsapp.com/")
-
-    def __clica_icone_digita_numero(self):
+    def __clica_icone_digita_numero(self) -> None:
         icone = self.driver.find_element(By.XPATH, self.icone_digita_numero)
         icone.click()
+        return None
 
-    def __exclui_9_telefone(self, numero):
+    def __exclui_9_telefone(self, numero: str) -> str:
         '''
         Exclui o número 9 depois nos telefones que tem menos de 10 digitos
         '''
@@ -55,7 +53,7 @@ class DisparadorApp:
         else:
             return numero
 
-    def __abre_caixa_digita_telefone(self):
+    def __abre_caixa_digita_telefone(self) -> None:
         if self.__primeiro_acesso_app:
             self.__clica_icone_digita_numero()
             self.primeiro_acesso_app = False
@@ -64,6 +62,10 @@ class DisparadorApp:
                 Keys.ALT).send_keys('s').key_up(Keys.ALT).key_up(
                     Keys.CONTROL
                 ).perform()
+        return None
+
+    def whatsappWeb(self):
+        self.driver.get("https://web.whatsapp.com/")
 
     def espera_login(self):
         self.wait.until(EC.presence_of_element_located((
@@ -72,7 +74,7 @@ class DisparadorApp:
         )))
         return self
 
-    def digita_numero_telefone(self, numero):
+    def digita_numero_telefone(self, numero: str) -> None:
         ''' Digita o número de telefone via plugin WA Web Plus'''
         self.__abre_caixa_digita_telefone()
         caixa_digita_numero = self.driver.find_element(
@@ -83,7 +85,7 @@ class DisparadorApp:
         caixa_digita_numero.send_keys(Keys.ENTER)
         return self
 
-    def envia_mensagem(self, mensagem):
+    def envia_mensagem(self, mensagem: str) -> None:
         self.wait.until(EC.presence_of_element_located((
             By.XPATH, self.elemento_caixa_digita_mensagem
         )))
@@ -94,7 +96,7 @@ class DisparadorApp:
         caixa_digita_mensagem.send_keys(Keys.ENTER)
         return self
 
-    def envia_imagem(self, imagem):
+    def envia_imagem(self, imagem: str) -> None:
         pass
 
 
@@ -103,4 +105,4 @@ if __name__ == "__main__":
     Wp.whatsappWeb()
     Wp.espera_login()
     Wp.digita_numero_telefone('77992129494').envia_mensagem('outro teste')
-    sleep(500)
+    sleep(60)
