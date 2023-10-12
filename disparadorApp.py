@@ -95,4 +95,5 @@ if __name__ == "__main__":
         By.XPATH, Wp.elemento_espera_depois_login
     )))
     Wp.digita_numero_telefone('77992129494')
-    sleep(300)
+    Wp.envia_mensagem('Teste')
+    sleep(500)

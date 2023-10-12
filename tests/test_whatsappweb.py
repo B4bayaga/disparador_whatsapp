@@ -1,8 +1,14 @@
 import pytest
-from disparadorApp import DisparadorApp
+import string
+import random
+from time import sleep
 from disparadorApp import DisparadorApp
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+
+
+def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 @pytest.fixture
@@ -54,5 +60,15 @@ def test_elemento_espera_caixa_digita_mensagem(Wp):
     )))
 
 
+@pytest.mark.slow
 def test_texto_envia_mensagem(Wp):
-    pass
+    palavra_teste = random_generator()
+    Wp.wait.until(EC.presence_of_element_located((
+        By.XPATH, Wp.elemento_espera_depois_login
+    )))
+    Wp.digita_numero_telefone('77992129494')
+    Wp.envia_mensagem(palavra_teste)
+    sleep(0.5)
+    mensagens_enviada = Wp.driver.find_elements(By.XPATH, '//span[@dir="ltr"]')
+    numero = len(mensagens_enviada)
+    assert mensagens_enviada[numero - 1].text == palavra_teste
