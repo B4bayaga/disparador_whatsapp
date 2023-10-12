@@ -32,6 +32,7 @@ class DisparadorApp:
             '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]'
         )
         self.actions = ActionChains(self.driver)
+        self.driver.implicitly_wait(20)
         self.wait = WebDriverWait(self.driver, 60)
         self.__primeiro_acesso_app = True
 
@@ -39,7 +40,6 @@ class DisparadorApp:
         self.driver.get("https://web.whatsapp.com/")
 
     def __clica_icone_digita_numero(self):
-        sleep(2)
         icone = self.driver.find_element(By.XPATH, self.icone_digita_numero)
         icone.click()
 
@@ -65,6 +65,13 @@ class DisparadorApp:
                     Keys.CONTROL
                 ).perform()
 
+    def espera_login(self):
+        self.wait.until(EC.presence_of_element_located((
+            By.XPATH,
+            self.elemento_espera_depois_login
+        )))
+        return self
+
     def digita_numero_telefone(self, numero):
         ''' Digita o número de telefone via plugin WA Web Plus'''
         self.__abre_caixa_digita_telefone()
@@ -85,15 +92,15 @@ class DisparadorApp:
         )
         caixa_digita_mensagem.send_keys(mensagem)
         caixa_digita_mensagem.send_keys(Keys.ENTER)
-        return None
+        return self
+
+    def envia_imagem(self, imagem):
+        pass
 
 
 if __name__ == "__main__":
     Wp = DisparadorApp()
     Wp.whatsappWeb()
-    Wp.wait.until(EC.presence_of_element_located((
-        By.XPATH, Wp.elemento_espera_depois_login
-    )))
-    Wp.digita_numero_telefone('77992129494')
-    Wp.envia_mensagem('Teste')
+    Wp.espera_login()
+    Wp.digita_numero_telefone('77992129494').envia_mensagem('outro teste')
     sleep(500)

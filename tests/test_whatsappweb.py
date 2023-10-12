@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
+def random_generator(size=12, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
@@ -28,18 +28,15 @@ def test_confirmando_url_pagina(Wp):
 
 
 def test_elemento_espera_apos_login(Wp):
-    assert Wp.wait.until(EC.presence_of_element_located((
-        By.XPATH, Wp.elemento_espera_depois_login
-    )))
+    assert Wp.espera_login()
 
 
 def test_elemento_digita_numero_whatsapp(Wp):
-    Wp.wait.until(EC.presence_of_element_located((
-        By.XPATH, Wp.elemento_espera_depois_login
-    )))
+    Wp.espera_login()
     Wp._DisparadorApp__abre_caixa_digita_telefone()
     assert Wp.wait.until(EC.presence_of_element_located((
-        By.XPATH, Wp.caixa_digita_numero_celular
+        By.XPATH,
+        Wp.caixa_digita_numero_celular
     )))
 
 
@@ -51,24 +48,24 @@ def test_remove_9_telefone():
 
 
 def test_elemento_espera_caixa_digita_mensagem(Wp):
-    Wp.wait.until(EC.presence_of_element_located((
-        By.XPATH, Wp.elemento_espera_depois_login
-    )))
+    Wp.espera_login()
     Wp.digita_numero_telefone('77992129494')
     assert Wp.wait.until(EC.presence_of_element_located((
-        By.XPATH, Wp.elemento_caixa_digita_mensagem
+        By.XPATH,
+        Wp.elemento_caixa_digita_mensagem
     )))
 
 
 @pytest.mark.slow
 def test_texto_envia_mensagem(Wp):
     palavra_teste = random_generator()
-    Wp.wait.until(EC.presence_of_element_located((
-        By.XPATH, Wp.elemento_espera_depois_login
-    )))
+    Wp.espera_login()
     Wp.digita_numero_telefone('77992129494')
     Wp.envia_mensagem(palavra_teste)
     sleep(0.5)
-    mensagens_enviada = Wp.driver.find_elements(By.XPATH, '//span[@dir="ltr"]')
+    mensagens_enviada = Wp.driver.find_elements(
+        By.XPATH,
+        '//span[@dir="ltr"]'
+    )
     numero = len(mensagens_enviada)
     assert mensagens_enviada[numero - 1].text == palavra_teste
