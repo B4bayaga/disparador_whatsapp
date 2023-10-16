@@ -1,3 +1,4 @@
+import json
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
@@ -8,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from time import sleep
+from consumidor_basico import consumidor
 
 
 class DisparadorApp:
@@ -104,5 +106,16 @@ if __name__ == "__main__":
     Wp = DisparadorApp()
     Wp.whatsappWeb()
     Wp.espera_login()
-    Wp.digita_numero_telefone('77992129494').envia_mensagem('outro teste')
-    sleep(60)
+    ativador = True
+    while ativador is not False:
+        json_str = consumidor()
+        print(json_str)
+        if json_str is None:
+            sleep(5)
+            break
+        else:
+            corpo = json.loads(json_str)
+            cliente = corpo["Cliente"]
+            numero = corpo["numero"]
+            Wp.digita_numero_telefone(str(numero)).envia_mensagem(f'outro teste {str(cliente)}')
+            sleep(5)
