@@ -56,7 +56,6 @@ def test_elemento_espera_caixa_digita_mensagem(Wp):
     )))
 
 
-@pytest.mark.slow
 def test_texto_envia_mensagem(Wp):
     palavra_teste = random_generator()
     Wp.espera_login()

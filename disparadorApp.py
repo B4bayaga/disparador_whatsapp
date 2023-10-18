@@ -8,8 +8,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+from RabbitMQ.consumidor_basico import consumidor
 from time import sleep
-from consumidor_basico import consumidor
 
 
 class DisparadorApp:
@@ -119,3 +119,4 @@ if __name__ == "__main__":
             numero = corpo["numero"]
             Wp.digita_numero_telefone(str(numero)).envia_mensagem(f'outro teste {str(cliente)}')
             sleep(5)
+    Wp.driver.quit()

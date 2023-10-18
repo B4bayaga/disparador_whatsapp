@@ -1,5 +1,4 @@
 import pika
-import json
 
 
 def consumidor():
