@@ -40,6 +40,17 @@ def test_elemento_digita_numero_whatsapp(Wp):
     )))
 
 
+@pytest.mark.slow
+def test_elemento_numero_sem_whatsapp(Wp):
+    Wp.espera_login()
+    numero_rafael_cobranca = '77999255107'
+    Wp.digita_numero_telefone(numero_rafael_cobranca)
+    assert Wp.wait.until(EC.presence_of_element_located((
+        By.XPATH,
+        Wp._DisparadorApp__elemento_caixa_digita_numero_sem_whatsapp
+    )))
+
+
 def test_remove_9_telefone():
     Wp = DisparadorApp()
     assert Wp._DisparadorApp__exclui_9_telefone('11992129494') == '11992129494'
