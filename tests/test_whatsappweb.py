@@ -43,12 +43,13 @@ def test_elemento_digita_numero_whatsapp(Wp):
     )))
 
 
+@pytest.mark.slow
 def test_elemento_numero_sem_whatsapp(Wp):
     Wp.espera_login()
     Wp.digita_numero_telefone(numero_cobranca)
     assert Wp.wait_curta.until(EC.presence_of_element_located((
         By.XPATH,
-        Wp.caixa_digita_numero_celular
+        Wp._DisparadorApp__elemento_caixa_digita_numero_sem_whatsapp
     )))
 
 
