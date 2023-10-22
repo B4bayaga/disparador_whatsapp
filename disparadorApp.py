@@ -43,7 +43,7 @@ class DisparadorApp:
             '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div/div/div'
         )
         self.elemento_clica_imagem = (
-            '//span[@data-icon="send"]'
+            '//span[@data-icon="send"]'     
         )
         self.actions = ActionChains(self.driver)
         self.driver.implicitly_wait(20)
@@ -123,38 +123,38 @@ class DisparadorApp:
         # # Falta implentar exeção de mensagem sem whatsapp
 
     def envia_imagem(self, imagem, inscricao=0, nome='', numero=0, cidade='') -> None:
-        # try:
-        #     self.__espera_elemento_XPATH(
-        #         self.__elemento_caixa_digita_numero_sem_whatsapp,
-        #     )
-        #     self.actions.send_keys(Keys.ESCAPE).send_keys(Keys.ESCAPE).perform()
-        #     # Falta implentar registro de número sem whatsapp
-        #     return None
-        # except:
-        self.__espera_elemento_XPATH(
-            self.elemento_anexar,
-        )
-        botao_anexar = self.__captura_elemento_XPATH(self.elemento_anexar)
-        botao_anexar.click()
-        sleep(2)
-        self.__espera_elemento_XPATH(
-            self.elemento_enviar_imagem,
-        )
-        envia_imagem = self.__captura_elemento_XPATH(
-            self.elemento_enviar_imagem
-        )
-        envia_imagem.send_keys(imagem)
-        sleep(2)
-        self.__espera_elemento_XPATH(
-            self.elemento_clica_imagem,
-        )
-        botao_envia_image = self.__captura_elemento_XPATH(
-            self.elemento_clica_imagem
-        )
-        botao_envia_image.click()
-        sleep(2)
-        return self
-        # Falta implentar registro de mensagem enviada com imagem
+        try:
+            self.__espera_elemento_XPATH(
+                self.__elemento_caixa_digita_numero_sem_whatsapp,
+            )
+            self.actions.send_keys(Keys.ESCAPE).send_keys(Keys.ESCAPE).perform()
+            # Falta implentar registro de número sem whatsapp
+            return None
+        except:
+            self.__espera_elemento_XPATH(
+                self.elemento_anexar,
+            )
+            botao_anexar = self.__captura_elemento_XPATH(self.elemento_anexar)
+            botao_anexar.click()
+            sleep(2)
+            self.__espera_elemento_XPATH(
+                self.elemento_enviar_imagem,
+            )
+            envia_imagem = self.__captura_elemento_XPATH(
+                self.elemento_enviar_imagem
+            )
+            envia_imagem.send_keys(imagem)
+            sleep(2)
+            self.__espera_elemento_XPATH(
+                self.elemento_clica_imagem,
+            )
+            botao_envia_image = self.__captura_elemento_XPATH(
+                self.elemento_clica_imagem
+            )
+            botao_envia_image.click()
+            sleep(2)
+            return self
+            # Falta implentar registro de mensagem enviada com imagem
 
 
 if __name__ == "__main__":
@@ -175,5 +175,5 @@ if __name__ == "__main__":
     #         numero = corpo["numero"]
     #         Wp.digita_numero_telefone(str(numero)).envia_mensagem(f'outro teste {str(cliente)}')
     #         sleep(5)
-    Wp.digita_numero_telefone('77992129494').envia_imagem(imagem)
+    Wp.digita_numero_telefone('77999255107').envia_imagem(imagem)
     Wp.driver.quit()
