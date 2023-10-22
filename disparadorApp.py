@@ -162,6 +162,7 @@ if __name__ == "__main__":
     Wp = DisparadorApp()
     Wp.whatsappWeb()
     Wp.espera_login()
+    sleep(600)
     # ativador = True
     # while ativador is not False:
     #     json_str = consumidor()
@@ -175,5 +176,5 @@ if __name__ == "__main__":
     #         numero = corpo["numero"]
     #         Wp.digita_numero_telefone(str(numero)).envia_mensagem(f'outro teste {str(cliente)}')
     #         sleep(5)
-    Wp.digita_numero_telefone('77999255107').envia_imagem(imagem)
-    Wp.driver.quit()
+    # Wp.digita_numero_telefone('77999255107').envia_imagem(imagem)
+    # Wp.driver.quit()
