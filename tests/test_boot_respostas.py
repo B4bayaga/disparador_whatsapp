@@ -9,7 +9,10 @@ boot = BootResposta()
 boot.driver.get("https://web.whatsapp.com/")
 
 
-@pytest.mark.slow
+def test_espera_login():
+    assert boot.espera_login()
+
+
 def test_verifica_elemento_bolinha_notificacao():
     assert boot.wait.until(EC.presence_of_element_located((
         By.CLASS_NAME,
