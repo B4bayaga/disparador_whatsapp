@@ -17,6 +17,9 @@ class BootResposta():
         self.__elemento_espera_depois_login = (
             '//*[@id="app"]/div/div/div[4]/header/div[1]/div/img'
         )
+        self.__elemento_numero_telefone = (
+            '//*[@id="main"]/header/div[2]/div/div/div/span'
+        )
         self.driver = webdriver.Chrome()
         self.options = Options()
         self.options.add_argument("--user-data-dir=./Cookies")
@@ -42,13 +45,22 @@ class BootResposta():
         Método encontra bolinha de notificação de nova mensagem e clica
         um pouco a esquerda evitando a seta de menu da bolinha.
         '''
-        notificacao = boot.driver.find_elements(
-        By.CLASS_NAME, boot.bolinha_notificacao
+        notificacao = self.driver.find_elements(
+        By.CLASS_NAME, self.bolinha_notificacao
         )
         actions = ActionChains(self.driver)
         actions.move_to_element_with_offset(
             notificacao[-1], 0, -20
         ).click().perform()
+
+    def captura_numero_telefopne(self):
+        '''
+        Método captura número de telefone
+        '''
+        elemento_telefone = self.driver.find_element(
+            By.XPATH, self.__elemento_numero_telefone
+        )
+        return elemento_telefone.text
 
 
 if __name__ == '__main__':
@@ -56,4 +68,7 @@ if __name__ == '__main__':
     boot.driver.get("https://web.whatsapp.com/")
     boot.espera_login()
     boot.clica_bolinha()
-    sleep(5)
+    sleep(2)
+    numero = boot.captura_numero_telefopne()
+    print(numero)
+    sleep(3)
