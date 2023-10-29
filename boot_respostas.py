@@ -18,7 +18,10 @@ class BootResposta():
             '//*[@id="app"]/div/div/div[4]/header/div[1]/div/img'
         )
         self.__elemento_numero_telefone = (
-            '//*[@id="main"]/header/div[2]/div/div/div/span'
+            '//*[@id="main"]/header/div[2]/div[1]/div/span'
+        )
+        self.__elementos_menssagens_recebidas = (
+            '//span[@dir="ltr"]'
         )
         self.driver = webdriver.Chrome()
         self.options = Options()
@@ -30,7 +33,7 @@ class BootResposta():
         self.driver.implicitly_wait(20)
         self.wait = WebDriverWait(self.driver, 60)
 
-    def espera_login(self):
+    def espera_login(self) -> None:
         '''
         Método espera login do whatsappweb
         '''
@@ -38,9 +41,10 @@ class BootResposta():
             By.XPATH,
             self.__elemento_espera_depois_login
         )))
+        sleep(10)
         return self
 
-    def clica_bolinha(self):
+    def clica_bolinha(self) -> None:
         '''
         Método encontra bolinha de notificação de nova mensagem e clica
         um pouco a esquerda evitando a seta de menu da bolinha.
@@ -51,9 +55,11 @@ class BootResposta():
         actions = ActionChains(self.driver)
         actions.move_to_element_with_offset(
             notificacao[-1], 0, -20
-        ).click().perform()
+        )
+        actions.click().perform()
+        return self
 
-    def captura_numero_telefopne(self):
+    def captura_numero_telefone(self) -> str:
         '''
         Método captura número de telefone
         '''
@@ -62,6 +68,15 @@ class BootResposta():
         )
         return elemento_telefone.text
 
+    def ler_mensagens_recebidas(self) -> list:
+        '''
+        Método lê mensagens recebidas
+        '''
+        mensagens_enviada = self.driver.find_elements(
+            By.XPATH, self.__elementos_menssagens_recebidas
+        )
+        return mensagens_enviada[-1].text
+
 
 if __name__ == '__main__':
     boot = BootResposta()
@@ -69,6 +84,7 @@ if __name__ == '__main__':
     boot.espera_login()
     boot.clica_bolinha()
     sleep(2)
-    numero = boot.captura_numero_telefopne()
-    print(numero)
-    sleep(3)
+    numero = boot.captura_numero_telefone()
+    mensagem = boot.ler_mensagens_recebidas()
+    print(numero, mensagem)
+    sleep(4)

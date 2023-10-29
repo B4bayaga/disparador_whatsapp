@@ -35,3 +35,10 @@ def test_telefone_apos_clica_bolinha():
         By.XPATH,
         boot._BootResposta__elemento_numero_telefone
     )))
+
+
+def test_elemento_mensagem_recebidas():
+    assert boot.wait.until(EC.presence_of_element_located((
+        By.XPATH,
+        boot._BootResposta__elementos_menssagens_recebidas
+    )))
