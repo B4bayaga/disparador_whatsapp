@@ -17,8 +17,11 @@ class BootResposta():
         self.__elemento_espera_depois_login = (
             '//*[@id="app"]/div/div/div[4]/header/div[1]/div/img'
         )
-        self.__elemento_numero_telefone = (
+        self.__elemento_nome_grupo = (
             '//*[@id="main"]/header/div[2]/div[1]/div/span'
+        )
+        self.__elemento_numero_telefone = (
+            '//*[@id="main"]/header/div[2]/div/div/div/span'
         )
         self.__elementos_menssagens_recebidas = (
             '//span[@dir="ltr"]'
@@ -57,16 +60,23 @@ class BootResposta():
             notificacao[-1], 0, -20
         )
         actions.click().perform()
+        sleep(2)
         return self
 
     def captura_numero_telefone(self) -> str:
         '''
         Método captura número de telefone
         '''
-        elemento_telefone = self.driver.find_element(
-            By.XPATH, self.__elemento_numero_telefone
-        )
-        return elemento_telefone.text
+        try:
+            elemento_telefone = self.driver.find_element(
+                By.XPATH, self.__elemento_numero_telefone
+            )
+            return elemento_telefone.text
+        except:
+            elemento_telefone = self.driver.find_element(
+                By.XPATH, self.__elemento_nome_grupo
+            )
+            return elemento_telefone.text
 
     def ler_mensagens_recebidas(self) -> list:
         '''
@@ -75,16 +85,43 @@ class BootResposta():
         mensagens_enviada = self.driver.find_elements(
             By.XPATH, self.__elementos_menssagens_recebidas
         )
+        sleep(2)
         return mensagens_enviada[-1].text
+
+    def monta_json(self, numero, mensagem) -> json:
+        '''
+        Método retorna objeto json com número e mensagem
+        '''
+        numero = numero
+        mensagem = mensagem
+        return json.dumps({
+            "numero": numero,
+            "mensagem": mensagem
+        })
+    
+    def monta_dicionario(self, numero, mensagem) -> dict:
+        '''
+        Método retorna objeto json com número e mensagem
+        '''
+        numero = numero
+        mensagem = mensagem
+        return {
+            "numero": numero,
+            "mensagem": mensagem,
+        }
 
 
 if __name__ == '__main__':
     boot = BootResposta()
     boot.driver.get("https://web.whatsapp.com/")
     boot.espera_login()
+    sleep(300)
     boot.clica_bolinha()
-    sleep(2)
-    numero = boot.captura_numero_telefone()
-    mensagem = boot.ler_mensagens_recebidas()
-    print(numero, mensagem)
-    sleep(4)
+
+    objeto = boot.monta_json()
+    print(objeto)
+    # boot.clica_bolinha()
+    # numero = boot.captura_numero_telefone()
+    # mensagem = boot.ler_mensagens_recebidas()
+    # print(numero, mensagem)
+    # sleep(4)

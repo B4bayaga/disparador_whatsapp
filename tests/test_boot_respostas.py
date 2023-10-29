@@ -37,8 +37,25 @@ def test_telefone_apos_clica_bolinha():
     )))
 
 
+def test_metodo_captura_numero_telefone():
+    numero = boot.captura_numero_telefone()
+    assert numero
+
+
 def test_elemento_mensagem_recebidas():
     assert boot.wait.until(EC.presence_of_element_located((
         By.XPATH,
         boot._BootResposta__elementos_menssagens_recebidas
     )))
+
+
+def test_mensgem_recebida():
+    mensagem = boot.ler_mensagens_recebidas()
+    assert mensagem
+
+
+def test_monta_dicionario():
+    numero = '77992129494'
+    mensagem = 'Oi'
+    dicionario = boot.monta_dicionario(numero, mensagem)
+    assert type(dicionario) == dict
