@@ -24,7 +24,10 @@ class BootResposta():
             '//*[@id="main"]/header/div[2]/div/div/div/span'
         )
         self.__elementos_menssagens_recebidas = (
-            '//span[@dir="ltr"]'
+            '_21Ahp'
+        )
+        self.__elemento_caixa_digita_mensagem = (
+            '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]'
         )
         self.driver = webdriver.Chrome()
         self.options = Options()
@@ -47,6 +50,14 @@ class BootResposta():
         sleep(10)
         return self
 
+    def fecha_janela_mensagem(self) -> None:
+        '''
+        Método fecha janela de mensagem
+        '''
+        actions = ActionChains(self.driver)
+        actions.send_keys(Keys.ESCAPE).perform()
+        return self
+
     def clica_bolinha(self) -> None:
         '''
         Método encontra bolinha de notificação de nova mensagem e clica
@@ -66,6 +77,8 @@ class BootResposta():
     def captura_numero_telefone(self) -> str:
         '''
         Método captura número de telefone
+        Esse método tenta pegar número sem salvar, depois se falhar
+        tenat pegar o nome do grupo ou contato.
         '''
         try:
             elemento_telefone = self.driver.find_element(
@@ -83,7 +96,7 @@ class BootResposta():
         Método lê mensagens recebidas
         '''
         mensagens_enviada = self.driver.find_elements(
-            By.XPATH, self.__elementos_menssagens_recebidas
+            By.CLASS_NAME, self.__elementos_menssagens_recebidas
         )
         sleep(2)
         return mensagens_enviada[-1].text
@@ -98,7 +111,7 @@ class BootResposta():
             "numero": numero,
             "mensagem": mensagem
         })
-    
+
     def monta_dicionario(self, numero, mensagem) -> dict:
         '''
         Método retorna objeto json com número e mensagem
@@ -110,6 +123,19 @@ class BootResposta():
             "mensagem": mensagem,
         }
 
+    def envia_mensagem(self, mensagem: str) -> None:
+        '''
+        Método envia mensagem
+        '''
+        caixa_digita_mensagem = self.driver.find_element(
+            By.XPATH, self.__elemento_caixa_digita_mensagem
+        )
+        caixa_digita_mensagem.click()
+        caixa_digita_mensagem.send_keys(mensagem)
+        caixa_digita_mensagem.send_keys(Keys.ENTER)
+        sleep(0.5)
+        return self
+
 
 if __name__ == '__main__':
     boot = BootResposta()
@@ -118,7 +144,7 @@ if __name__ == '__main__':
     sleep(300)
     boot.clica_bolinha()
 
-    objeto = boot.monta_json()
+    objeto = boot.monta_dicionario()
     print(objeto)
     # boot.clica_bolinha()
     # numero = boot.captura_numero_telefone()

@@ -118,7 +118,6 @@ class DisparadorApp:
         caixa_digita_mensagem.send_keys(Keys.ENTER)
         sleep(0.3)
         return self
-        # # Falta implentar exeção de mensagem sem whatsapp
 
     def envia_imagem(self, imagem, inscricao=0, nome='', numero=0, cidade='') -> None:
         try:

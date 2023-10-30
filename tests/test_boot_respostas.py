@@ -44,8 +44,15 @@ def test_metodo_captura_numero_telefone():
 
 def test_elemento_mensagem_recebidas():
     assert boot.wait.until(EC.presence_of_element_located((
-        By.XPATH,
+        By.CLASS_NAME,
         boot._BootResposta__elementos_menssagens_recebidas
+    )))
+
+
+def test_elemento_caixa_mensagem():
+    assert boot.wait.until(EC.presence_of_element_located((
+        By.XPATH,
+        boot._BootResposta__elemento_caixa_digita_mensagem
     )))
 
 
@@ -59,3 +66,11 @@ def test_monta_dicionario():
     mensagem = 'Oi'
     dicionario = boot.monta_dicionario(numero, mensagem)
     assert type(dicionario) == dict
+
+
+def test_conteudo_dicionario():
+    numero = '77992129494'
+    mensagem = 'Oi'
+    dicionario = boot.monta_dicionario(numero, mensagem)
+    assert dicionario['numero'] == numero
+    assert dicionario['mensagem'] == mensagem
