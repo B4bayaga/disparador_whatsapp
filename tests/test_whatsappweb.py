@@ -13,6 +13,8 @@ def random_generator(size=12, chars=string.ascii_uppercase + string.digits):
 
 numero_cobranca = '77999255107'
 numero_rafael = '77992129494'
+
+
 @pytest.fixture
 def Wp():
     Wp = DisparadorApp()
@@ -33,7 +35,13 @@ def test_elemento_espera_apos_login(Wp):
     assert Wp.espera_login()
 
 
-@pytest.mark.slow
+def test_remove_9_telefone():
+    Wp = DisparadorApp()
+    assert Wp._DisparadorApp__exclui_9_telefone('11992129494') == '11992129494'
+    assert Wp._DisparadorApp__exclui_9_telefone('77992129494') == '7792129494'
+    assert Wp._DisparadorApp__exclui_9_telefone('7792129494') == '7792129494'
+
+
 def test_elemento_digita_numero_whatsapp(Wp):
     Wp.espera_login()
     Wp._DisparadorApp__abre_caixa_digita_telefone()
@@ -48,15 +56,8 @@ def test_elemento_numero_sem_whatsapp(Wp):
     Wp.digita_numero_telefone(numero_cobranca)
     assert Wp.wait_curta.until(EC.presence_of_element_located((
         By.XPATH,
-        Wp.caixa_digita_numero_celular
+        Wp._DisparadorApp__elemento_caixa_digita_numero_sem_whatsapp
     )))
-
-
-def test_remove_9_telefone():
-    Wp = DisparadorApp()
-    assert Wp._DisparadorApp__exclui_9_telefone('11992129494') == '11992129494'
-    assert Wp._DisparadorApp__exclui_9_telefone('77992129494') == '7792129494'
-    assert Wp._DisparadorApp__exclui_9_telefone('7792129494') == '7792129494'
 
 
 def test_elemento_espera_caixa_digita_mensagem(Wp):
@@ -65,6 +66,31 @@ def test_elemento_espera_caixa_digita_mensagem(Wp):
     assert Wp.wait_curta.until(EC.presence_of_element_located((
         By.XPATH,
         Wp.elemento_caixa_digita_mensagem
+    )))
+
+
+def test_elento_espera_elemento_anexar(Wp):
+    Wp.espera_login()
+    Wp.digita_numero_telefone(numero_rafael)
+    assert Wp.wait_curta.until(EC.presence_of_element_located((
+        By.XPATH,
+        Wp.elemento_anexar
+    )))
+
+
+def test_elento_espera_elemento_enviar_imagem(Wp):
+    Wp.espera_login()
+    Wp.digita_numero_telefone(numero_rafael)
+    Wp._DisparadorApp__espera_elemento_XPATH(
+        Wp.elemento_anexar,
+    )
+    botao_anexar = Wp._DisparadorApp__captura_elemento_XPATH(
+        Wp.elemento_anexar
+    )
+    botao_anexar.click()
+    assert Wp.wait_curta.until(EC.presence_of_element_located((
+        By.XPATH,
+        Wp.elemento_enviar_imagem
     )))
 
 
